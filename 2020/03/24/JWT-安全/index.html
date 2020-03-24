@@ -1,0 +1,199 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>JWT--安全 › Sf0O</title>
+  <meta name="author" content="sf00">
+  
+  <meta name="description" content="JSON Web Token
+aka JWT
+
+JWT由三部分构成，分别称为header，payload和signature，各部分用“.”相连构成一个完整的Token
+JWT简介1.header1&amp;#123;&#34;alg&#34;: &#34;HS256&#34;, &#34;typ&#34;: &#34;JWT&#34;&amp;#125;
+
+由两部分组成，令牌类型（即：JWT）、散列算法（HMAC、RSASSA、RSASSA-PSS等），经过base64编码之后用 “ . “ 连接。
+
+2.payload1&amp;#123;&#34;name&#34;: &#34;John Doe&#34;, &#34;admin&#34;: true&amp;#125;">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  <meta property="og:title" content="JWT--安全"/>
+  <meta property="og:site_name" content="Sf0O"/>
+
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Sf0O" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
+
+<meta name="generator" content="Hexo 4.2.0"></head>
+
+
+<body>
+  <header id="header"><div class="meta inner">
+  <h1><a href="/">Sf0O</a></h1>
+  <h2><a href="/">永动菜鸡</a></h2>
+  <nav id="main-nav">
+    <ul>
+      
+      <li><a href="/about">About</a></li>
+      
+      <li><a href="/archives">Archives</a></li>
+      
+      <li><a href="/atom.xml">RSS</a></li>
+      
+    </ul>
+    <div class="clearfix"></div>
+  </nav>
+</div>
+<div class="clearfix"></div>
+</header>
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
+  <div class="post-content">
+    <header>
+      
+  
+    <h1 class="title">JWT--安全</h1>
+  
+
+      
+        <time datetime="2020-03-24T07:21:22.000Z">2020-03-24</time>
+      
+    </header>
+    <div class="entry">
+      
+        <h2 id="JSON-Web-Token"><a href="#JSON-Web-Token" class="headerlink" title="JSON Web Token"></a>JSON Web Token</h2><blockquote>
+<p>aka JWT</p>
+</blockquote>
+<p><em>JWT由三部分构成，分别称为header，payload和signature，各部分用“.”相连构成一个完整的Token</em></p>
+<h1 id="JWT简介"><a href="#JWT简介" class="headerlink" title="JWT简介"></a>JWT简介</h1><h3 id="1-header"><a href="#1-header" class="headerlink" title="1.header"></a><strong>1.header</strong></h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="attr">"alg"</span>: <span class="string">"HS256"</span>, <span class="attr">"typ"</span>: <span class="string">"JWT"</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由两部分组成，令牌类型（即：JWT）、散列算法（HMAC、RSASSA、RSASSA-PSS等），经过base64编码之后用 “ . “ 连接。</p>
+<hr>
+<h3 id="2-payload"><a href="#2-payload" class="headerlink" title="2.payload"></a><strong>2.payload</strong></h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="attr">"name"</span>: <span class="string">"John Doe"</span>, <span class="attr">"admin"</span>: <span class="literal">true</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>JWT的第二部分是payload，其中包含claims。claims是关于实体（常用的是用户信息）和其他数据的声明，claims有三种类型： <strong>registered</strong>, <strong>public</strong>, <strong>and private claims</strong>。<br><strong><em>Registered claims</em></strong>： 这些是一组预定义的laims，非强制性的，但是推荐使用， iss（发行人）， exp（到期时间）， sub（主题）， aud（观众）等；<br><strong><em>Public claims</em></strong>: 自定义claims，注意不要和JWT注册表中属性冲突，这里可以查看JWT注册表<br><strong><em>Private claims</em></strong>: 这些是自定义的claims，用于在同意使用这些claims的各方之间共享信息，它们既不是Registered claims，也不是Public claims。</p>
+<p>默认的有<strong>七</strong>个字段：</p>
+<p>​    <strong>iss  【issuer】发布者的url地址</strong></p>
+<p>​    <strong>sub 【subject】该JWT所面向的用户，用于处理特定应用，不是常用的字段</strong></p>
+<p>​    <strong>aud 【audience】接受者的url地址</strong></p>
+<p>​    <strong>exp 【expiration】 该jwt销毁的时间；unix时间戳</strong></p>
+<p>​    <strong>nbf  【not before】 该jwt的使用时间不能早于该时间；unix时间戳</strong></p>
+<p>​    <strong>iat   【issued at】 该jwt的发布时间；unix 时间戳</strong></p>
+<p>​    <strong>jti    【JWT ID】 该jwt的唯一ID编号</strong></p>
+<p>Public Claims这些可以由使用JWT的那些标准化组织根据需要定义，应当参考文档<a href="https://www.iana.org/assignments/jwt/jwt.xhtml" target="_blank" rel="noopener">IANA JSON Web Token Registry</a> 。</p>
+<p>除此之外，你还可以自定义私有字段。</p>
+<hr>
+<h3 id="3-signature"><a href="#3-signature" class="headerlink" title="3.signature :"></a><strong>3.signature</strong> :</h3><p>将 <code>header.payload</code> 使用<code>alg</code> 指定的算法加密，然后再Base64Url编码得到JWT的第三部分<code>signature</code> 。所支持的算法 类型取决于实现，但<code>HS256</code> 和 <code>none</code> 是强制要求实现的。</p>
+<h1 id="JWT带来的安全性问题"><a href="#JWT带来的安全性问题" class="headerlink" title="JWT带来的安全性问题"></a>JWT带来的安全性问题</h1><h2 id="敏感信息泄露"><a href="#敏感信息泄露" class="headerlink" title="敏感信息泄露"></a>敏感信息泄露</h2><p>JWT中的<code>header</code> 和 <code>payload</code>通过base64解码即可</p>
+<blockquote>
+<p>推荐burpsuite中一个插件 “JTW4B” 地址：</p>
+<p><a href="https://github.com/PortSwigger/json-web-tokens" target="_blank" rel="noopener">https://github.com/PortSwigger/json-web-tokens</a></p>
+<p>在线解码：</p>
+<p><a href="https://jwt.io/" target="_blank" rel="noopener">https://jwt.io/</a></p>
+</blockquote>
+<h2 id="指定算法为none"><a href="#指定算法为none" class="headerlink" title="指定算法为none"></a>指定算法为none</h2><p>算法 <code>none</code> 是JWT规范中强制要求实现的，但有些实现JWT的库直接将使用<code>none</code> 算法的token视为已经过校验。这样攻击者就可以设置<code>alg</code> 为<code>none</code> ，使<code>signature</code> 部分为空，然后构造包含任意<code>payload</code> 的JWT来欺骗服务端。</p>
+<blockquote>
+<p>即 ： <strong><em>header . payload .</em></strong></p>
+</blockquote>
+<h2 id="将签名算法从非对称类型改为对称类型"><a href="#将签名算法从非对称类型改为对称类型" class="headerlink" title="将签名算法从非对称类型改为对称类型"></a>将签名算法从非对称类型改为对称类型</h2><p>使用非对称加密算法（主要基于RSA、ECDSA，如S256）分发JWT的过程是使用私钥（private）加密生成JWT，使用公钥（public）解密验证。</p>
+<p>使用对称加密算法（主要基于HMAC，如HS256）分发JWT的过程是使用同一个密钥（secret）生成和验证JWT。</p>
+<p>如果服务端期待收到的算法类型为RS256，然后以RS256和public去验证JWT，而实际上收到的算法类型是HS256，那么服务端就可能尝试把public当作secret，然后用HS256算法解密验证JWT。</p>
+<p>由于RS256的public人人都可获得，攻击者可以预先以public为密钥，用HS256算法伪造包含任意<code>payload</code> 的JWT，从而成功通过服务端的验证。</p>
+<h3 id="爆破密钥"><a href="#爆破密钥" class="headerlink" title="爆破密钥"></a><strong>爆破密钥</strong></h3><p>JWT的安全性依赖于密钥的保密性，任何拥有密钥的人都可以构造任何内容的合法token。</p>
+<p>当一个JSON Web Token 被分发出去，如果密钥不够强壮就存在被爆破的风险，而且整个爆破过程可以离线进行。</p>
+<p>已经有人写了一些工具，推荐如下：</p>
+<ul>
+<li><a href="https://github.com/jmaxxz/jwtbrute" target="_blank" rel="noopener">jwtbrute</a></li>
+<li><a href="https://github.com/Sjord/jwtcrack/blob/master/crackjwt.py" target="_blank" rel="noopener">Sjord’ python script</a></li>
+<li><a href="https://github.com/magnumripper/JohnTheRipper" target="_blank" rel="noopener">John the Ripper</a></li>
+</ul>
+
+      
+    </div>
+      
+      <footer>
+        
+        
+        
+  <div class="addthis addthis_toolbox addthis_default_style">
+    
+      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
+    
+    
+      <a class="addthis_button_tweet"></a>
+    
+    
+      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
+    
+    
+      <a class="addthis_button_pinterest_pinit" pi:pinit:layout="horizontal"></a>
+    
+    <a class="addthis_counter addthis_pill_style"></a>
+  </div>
+  <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js"></script>
+
+      
+      <div class="clearfix"></div>
+      </footer>
+  </div>
+</article>
+
+
+<section id="comment">
+  
+</section>
+
+
+</div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:yoursite.com">
+  </form>
+</div>
+
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2020/03/24/JWT-安全/">JWT--安全</a>
+      </li>
+    
+      <li>
+        <a href="/2020/03/20/好奇打开的博客之旅/">好奇打开的博客之旅</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+
+  
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 sf00
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+
+</body>
+</html>
+

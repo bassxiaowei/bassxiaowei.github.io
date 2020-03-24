@@ -1,123 +1,109 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
-    
-    <title>Sf0O</title>
-    <meta charset="utf-8">
-    
-    <meta name="title" content="Sf0O">
-    <meta name="description" content="">
-    <meta property="og:image" content="/favicon.png">
-    <meta property="og:image:width" content="200" />
-    <meta property="og:image:height" content="200" />
-    <link rel="shortcut icon" href="/favicon.png">
-    
-    <link rel="stylesheet"
-        href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/arduino-light.min.css">
-    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
-    
-    
-<link rel="stylesheet" href="/css/style.css">
+  <meta charset="utf-8">
+  
+  <title>Sf0O</title>
+  <meta name="author" content="sf00">
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    
-<script src="/js/jquery.min.js"></script>
+  
+  <meta property="og:site_name" content="Sf0O"/>
 
-    
-<script src="/js/saki.js"></script>
+  
+    <meta property="og:image" content=""/>
+  
+
+  <link href="/favicon.png" rel="icon">
+  <link rel="alternate" href="/atom.xml" title="Sf0O" type="application/atom+xml">
+  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
+  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+  
 
 <meta name="generator" content="Hexo 4.2.0"></head>
 
+
 <body>
-  <header class="header">
-  <div class="blog-title">
-    <a href="/" class="logo">Sf0O</a>
-  </div>
-  <nav class="navbar">
-    <ul class="menu">
+  <header id="header"><div class="meta inner">
+  <h1><a href="/">Sf0O</a></h1>
+  <h2><a href="/">永动菜鸡</a></h2>
+  <nav id="main-nav">
+    <ul>
       
+      <li><a href="/about">About</a></li>
       
+      <li><a href="/archives">Archives</a></li>
       
-      <li class="menu-item">
-        
-        <a href="/" class="current-menu-item-link">Home</a>
-        
-      </li>
-      
-      
-      
-      <li class="menu-item">
-        
-        <a href="/archives" class="menu-item-link">Archives</a>
-        
-      </li>
-      
-      
-      
-      <li class="menu-item">
-        
-        <a href="/about" class="menu-item-link">About</a>
-        
-      </li>
-      
-      
-      
-      <li class="menu-item">
-        
-        <a href="/rss" class="menu-item-link">RSS</a>
-        
-      </li>
+      <li><a href="/atom.xml">RSS</a></li>
       
     </ul>
+    <div class="clearfix"></div>
   </nav>
+</div>
+<div class="clearfix"></div>
 </header>
-  <main class="main">
-    <section class="posts">
-  
+  <div id="content" class="inner">
+    <div id="main-col" class="alignleft"><div id="wrapper">
   <article class="post">
-    <div class="post-title">
-      <a class="post-title-link" href="/2020/03/21/%E7%BB%88%E4%BA%8E%E6%90%AD%E5%BB%BA%E5%AE%8C%E6%AF%95/">终于搭建完毕</a>
-    </div>
-    <div class="post-content">
+  <div class="post-content">
+    <header>
       
-      <p>在 Ubuntu 系统中不能直接通过 apt 安装，需要先添加 yarn 仓库</p>
-<p><img src="/images/php-logo.png" alt="upload successful"></p>
+  
+    <h1 class="title"><a href="/2020/03/24/JWT-安全/">JWT--安全</a></h1>
+  
 
       
-    </div>
-    <div class="post-meta">
-      <span class="post-time">2020/03/21</span>
-    </div>
-  </article>
-  
-  <article class="post">
-    <div class="post-title">
-      <a class="post-title-link" href="/2020/03/21/%E6%B5%8B%E8%AF%95%E4%B8%80%E4%B8%8Bsshkey%E6%8F%90%E4%BA%A4/">测试一下sshkey提交</a>
-    </div>
-    <div class="post-content">
+        <time datetime="2020-03-24T07:21:22.000Z">2020-03-24</time>
       
-      <h3 id="记一次菜鸡的web渗透"><a href="#记一次菜鸡的web渗透" class="headerlink" title="记一次菜鸡的web渗透"></a>记一次菜鸡的web渗透</h3><hr>
-<blockquote>
-<p>本文内容纯属虚构,如有雷同,纯属巧合</p>
+    </header>
+    <div class="entry">
+      
+        <h2 id="JSON-Web-Token"><a href="#JSON-Web-Token" class="headerlink" title="JSON Web Token"></a>JSON Web Token</h2><blockquote>
+<p>aka JWT</p>
 </blockquote>
-<p><strong>向往常一样在某edu站闲逛,发现某站敏感信息遍历</strong></p>
+<p><em>JWT由三部分构成，分别称为header，payload和signature，各部分用“.”相连构成一个完整的Token</em></p>
+<h1 id="JWT简介"><a href="#JWT简介" class="headerlink" title="JWT简介"></a>JWT简介</h1><h3 id="1-header"><a href="#1-header" class="headerlink" title="1.header"></a><strong>1.header</strong></h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="attr">"alg"</span>: <span class="string">"HS256"</span>, <span class="attr">"typ"</span>: <span class="string">"JWT"</span>&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由两部分组成，令牌类型（即：JWT）、散列算法（HMAC、RSASSA、RSASSA-PSS等），经过base64编码之后用 “ . “ 连接。</p>
+<hr>
+<h3 id="2-payload"><a href="#2-payload" class="headerlink" title="2.payload"></a><strong>2.payload</strong></h3><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;<span class="attr">"name"</span>: <span class="string">"John Doe"</span>, <span class="attr">"admin"</span>: <span class="literal">true</span>&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+      
+        
+        <footer>
+          <div class="alignleft">
+            <a href="/2020/03/24/JWT-安全/#more" class="more-link">Read More ›</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+      </footer>
+  </div>
+</article>
+
+
+
+
+
+  <article class="post">
+  <div class="post-content">
+    <header>
+      
+  
+    <h1 class="title"><a href="/2020/03/20/好奇打开的博客之旅/">好奇打开的博客之旅</a></h1>
+  
 
       
-    </div>
-    <div class="post-meta">
-      <span class="post-time">2020/03/21</span>
-    </div>
-  </article>
-  
-  <article class="post">
-    <div class="post-title">
-      <a class="post-title-link" href="/2020/03/20/%E5%A5%BD%E5%A5%87%E6%89%93%E5%BC%80%E7%9A%84%E5%8D%9A%E5%AE%A2%E4%B9%8B%E6%97%85/">好奇打开的博客之旅</a>
-    </div>
-    <div class="post-content">
+        <time datetime="2020-03-20T14:16:00.000Z">2020-03-20</time>
       
-      <h3 id="菜鸡好奇，学大佬们搞了个博客"><a href="#菜鸡好奇，学大佬们搞了个博客" class="headerlink" title="菜鸡好奇，学大佬们搞了个博客"></a>菜鸡好奇，学大佬们搞了个博客</h3><blockquote>
+    </header>
+    <div class="entry">
+      
+        <h3 id="菜鸡好奇，学大佬们搞了个博客"><a href="#菜鸡好奇，学大佬们搞了个博客" class="headerlink" title="菜鸡好奇，学大佬们搞了个博客"></a>菜鸡好奇，学大佬们搞了个博客</h3><blockquote>
 <p>妈的这玩意弄了老半天</p>
 </blockquote>
 <hr>
@@ -125,15 +111,71 @@
 
       
     </div>
-    <div class="post-meta">
-      <span class="post-time">2020/03/20</span>
-    </div>
-  </article>
+      
+        
+        <footer>
+          <div class="alignleft">
+            <a href="/2020/03/20/好奇打开的博客之旅/#more" class="more-link">Read More ›</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+      </footer>
+  </div>
+</article>
+
+
+
+
+
+
+<nav id="pagination">
   
-</section>
+  
+  <div class="clearfix"></div>
+</nav></div></div>
+    <aside id="sidebar" class="alignright">
+  <div class="search">
+  <form action="//google.com/search" method="get" accept-charset="utf-8">
+    <input type="search" name="q" results="0" placeholder="Search">
+    <input type="hidden" name="q" value="site:yoursite.com">
+  </form>
+</div>
 
-<p class="license">本站文章使用 CC BY-NC-SA 4.0 许可证</p>
-  </main>
+  
+<div class="widget tag">
+  <h3 class="title">Recent Posts</h3>
+  <ul class="entry">
+    
+      <li>
+        <a href="/2020/03/24/JWT-安全/">JWT--安全</a>
+      </li>
+    
+      <li>
+        <a href="/2020/03/20/好奇打开的博客之旅/">好奇打开的博客之旅</a>
+      </li>
+    
+  </ul>
+</div>
+
+
+  
+
+  
+</aside>
+    <div class="clearfix"></div>
+  </div>
+  <footer id="footer" class="inner"><div class="alignleft">
+  
+  &copy; 2020 sf00
+  
+</div>
+<div class="clearfix"></div></footer>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+
 </body>
-
 </html>
+
