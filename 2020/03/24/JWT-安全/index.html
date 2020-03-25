@@ -97,13 +97,14 @@
 
 <p>JWT的第二部分是payload，其中包含claims。claims是关于实体（常用的是用户信息）和其他数据的声明，claims有三种类型： <strong>registered</strong>, <strong>public</strong>, <strong>and private claims</strong>。<br><strong><em>Registered claims</em></strong>： 这些是一组预定义的laims，非强制性的，但是推荐使用， iss（发行人）， exp（到期时间）， sub（主题）， aud（观众）等；<br><strong><em>Public claims</em></strong>: 自定义claims，注意不要和JWT注册表中属性冲突，这里可以查看JWT注册表<br><strong><em>Private claims</em></strong>: 这些是自定义的claims，用于在同意使用这些claims的各方之间共享信息，它们既不是Registered claims，也不是Public claims。</p>
 <p>默认的有<strong>七</strong>个字段：</p>
-<p>​    <strong>iss  【issuer】发布者的url地址</strong></p>
-<p>​    <strong>sub 【subject】该JWT所面向的用户，用于处理特定应用，不是常用的字段</strong></p>
-<p>​    <strong>aud 【audience】接受者的url地址</strong></p>
-<p>​    <strong>exp 【expiration】 该jwt销毁的时间；unix时间戳</strong></p>
-<p>​    <strong>nbf  【not before】 该jwt的使用时间不能早于该时间；unix时间戳</strong></p>
-<p>​    <strong>iat   【issued at】 该jwt的发布时间；unix 时间戳</strong></p>
-<p>​    <strong>jti    【JWT ID】 该jwt的唯一ID编号</strong></p>
+<blockquote>
+<p>iss  【issuer】发布者的url地址**</p>
+<p><strong>sub 【subject】该JWT所面向的用户，用于处理特定应用，不是常用的字段</strong> <strong>aud 【audience】接受者的url地址</strong></p>
+<p><strong>exp 【expiration】 该jwt销毁的时间；unix时间戳</strong></p>
+<p><strong>nbf  【not before】 该jwt的使用时间不能早于该时间；unix时间戳</strong></p>
+<p><strong>iat   【issued at】 该jwt的发布时间；unix 时间戳</strong></p>
+<p><strong>jti    【JWT ID】 该jwt的唯一ID编号</strong></p>
+</blockquote>
 <p>Public Claims这些可以由使用JWT的那些标准化组织根据需要定义，应当参考文档<a href="https://www.iana.org/assignments/jwt/jwt.xhtml" target="_blank" rel="noopener">IANA JSON Web Token Registry</a> 。</p>
 <p>除此之外，你还可以自定义私有字段。</p>
 <hr>
@@ -115,14 +116,32 @@
 <p>在线解码：</p>
 <p><a href="https://jwt.io/" target="_blank" rel="noopener">https://jwt.io/</a></p>
 </blockquote>
+<hr>
 <h2 id="指定算法为none"><a href="#指定算法为none" class="headerlink" title="指定算法为none"></a>指定算法为none</h2><p>算法 <code>none</code> 是JWT规范中强制要求实现的，但有些实现JWT的库直接将使用<code>none</code> 算法的token视为已经过校验。这样攻击者就可以设置<code>alg</code> 为<code>none</code> ，使<code>signature</code> 部分为空，然后构造包含任意<code>payload</code> 的JWT来欺骗服务端。</p>
 <blockquote>
 <p>即 ： <strong><em>header . payload .</em></strong></p>
 </blockquote>
-<h2 id="将签名算法从非对称类型改为对称类型"><a href="#将签名算法从非对称类型改为对称类型" class="headerlink" title="将签名算法从非对称类型改为对称类型"></a>将签名算法从非对称类型改为对称类型</h2><p>使用非对称加密算法（主要基于RSA、ECDSA，如S256）分发JWT的过程是使用私钥（private）加密生成JWT，使用公钥（public）解密验证。</p>
-<p>使用对称加密算法（主要基于HMAC，如HS256）分发JWT的过程是使用同一个密钥（secret）生成和验证JWT。</p>
+<hr>
+<h2 id="将签名算法从非对称类型改为对称类型"><a href="#将签名算法从非对称类型改为对称类型" class="headerlink" title="将签名算法从非对称类型改为对称类型"></a>将签名算法从非对称类型改为对称类型</h2><p>使用<code>非对称加密算法</code>（主要基于RSA、ECDSA，如RS256）<strong><em>分发JWT的过程是使用私钥（private）加密生成JWT，使用公钥（public）解密验证。</em></strong></p>
+<p>使用<code>对称加密算法</code>（主要基于HMAC，如HS256）<strong><em>分发JWT的过程是使用同一个密钥（secret）生成和验证JWT。</em></strong></p>
 <p>如果服务端期待收到的算法类型为RS256，然后以RS256和public去验证JWT，而实际上收到的算法类型是HS256，那么服务端就可能尝试把public当作secret，然后用HS256算法解密验证JWT。</p>
 <p>由于RS256的public人人都可获得，攻击者可以预先以public为密钥，用HS256算法伪造包含任意<code>payload</code> 的JWT，从而成功通过服务端的验证。</p>
+<p><strong><em>CVE-2016-5431-密钥混淆攻击</em></strong></p>
+<p>HMAC应当禁止公钥作为secret。</p>
+<p>假设我们获取到了一个公钥，利用公钥来签名，通过如下代码：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">$secret = file_get_contents(<span class="string">"./key_box/public.pem"</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">//var_dump($secret);</span></span><br><span class="line"></span><br><span class="line">$sign = <span class="keyword">new</span> Sha256();</span><br><span class="line"></span><br><span class="line">$token = <span class="string">"eyJ0eXAiO..."</span>;</span><br><span class="line"></span><br><span class="line">$token = (<span class="keyword">new</span> Parser())-&gt;parse((string) $token);</span><br><span class="line"></span><br><span class="line">$hacktoken = (<span class="keyword">new</span>  Builder())</span><br><span class="line"></span><br><span class="line">    -&gt;setIssuer($token-&gt;getClaim(<span class="string">'iss'</span>))</span><br><span class="line"></span><br><span class="line">    -&gt;setIssuedAt($token-&gt;getClaim(<span class="string">'iat'</span>))</span><br><span class="line"></span><br><span class="line">    -&gt;setExpiration($token-&gt;getClaim(<span class="string">'exp'</span>))</span><br><span class="line"></span><br><span class="line">    -&gt;set(<span class="string">"data"</span>,[<span class="string">"hack"</span>=&gt;<span class="string">"shaobaobaoer"</span>])</span><br><span class="line"></span><br><span class="line">    -&gt;sign($sign,$secret)</span><br><span class="line"></span><br><span class="line">    -&gt;getToken();</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> $hacktoken.PHP_EOL;</span><br><span class="line"></span><br><span class="line">var_dump($hacktoken-&gt;verify($sign,$secret));</span><br></pre></td></tr></table></figure>
+
+<p>推荐一个工具：</p>
+<blockquote>
+<p><a href="https://github.com/ticarpi/jwt_tool/" target="_blank" rel="noopener">https://github.com/ticarpi/jwt_tool/</a></p>
+<p>1、 检测令牌的有效性；</p>
+<p>2、 测试RS/HS256公钥错误匹配漏洞；</p>
+<p>3、 测试alg=None签名绕过漏洞；</p>
+<p>4、 测试密钥/密钥文件的有效性；</p>
+<p>5、 通过高速字典攻击识别弱密钥；</p>
+<p>6、 伪造新的令牌Header和Payload值，并使用密钥创建新的签名；</p>
+</blockquote>
+<hr>
 <h3 id="爆破密钥"><a href="#爆破密钥" class="headerlink" title="爆破密钥"></a><strong>爆破密钥</strong></h3><p>JWT的安全性依赖于密钥的保密性，任何拥有密钥的人都可以构造任何内容的合法token。</p>
 <p>当一个JSON Web Token 被分发出去，如果密钥不够强壮就存在被爆破的风险，而且整个爆破过程可以离线进行。</p>
 <p>已经有人写了一些工具，推荐如下：</p>
@@ -130,7 +149,49 @@
 <li><a href="https://github.com/jmaxxz/jwtbrute" target="_blank" rel="noopener">jwtbrute</a></li>
 <li><a href="https://github.com/Sjord/jwtcrack/blob/master/crackjwt.py" target="_blank" rel="noopener">Sjord’ python script</a></li>
 <li><a href="https://github.com/magnumripper/JohnTheRipper" target="_blank" rel="noopener">John the Ripper</a></li>
+<li><a href="https://github.com/brendan-rius/c-jwt-cracker" target="_blank" rel="noopener">https://github.com/brendan-rius/c-jwt-cracker</a>     [推荐]</li>
 </ul>
+<hr>
+<h3 id="伪造密钥"><a href="#伪造密钥" class="headerlink" title="伪造密钥"></a><strong>伪造密钥</strong></h3><p>有时JWT采用<code>header</code> 中的<code>kid</code> 字段关联校验算法的密钥，这个密钥可能是对称加密的密钥，也可能是非对称加密的公钥。如果能够猜测<code>kid</code> 和 密钥的关联性，攻击者就可能修改<code>kid</code> 来欺骗服务端，使其校验时使用攻击者可控的密钥，于是攻击者就可以伪造任意内容的可通过校验的JWT。</p>
+<hr>
+<h3 id="脑洞大开"><a href="#脑洞大开" class="headerlink" title="脑洞大开"></a><strong>脑洞大开</strong></h3><p><strong>利用JWT进行sql注入</strong></p>
+<blockquote>
+<p><a href="https://github.com/greunion/ctf-write-ups/tree/master/2018-nullcon/web/400-web6" target="_blank" rel="noopener">https://github.com/greunion/ctf-write-ups/tree/master/2018-nullcon/web/400-web6</a></p>
+</blockquote>
+<p>当解密JWT的秘钥很多的时候，往往需要通过kid来确定使用哪个秘钥，而keyid参数通过base64编码来保存，可以被篡改。当keyid要通过数据库API拿取得时候，往往就会联想到sql 注入。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">"kid":"aaaaaaa' UNION SELECT 'key';--"  </span><br><span class="line"><span class="comment">//使用字符串"key"验证token</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>利用JWT进行目录遍历</strong></p>
+<p>KID通常用于从文件系统中检索密钥文件，因此，如果在使用前不清理KID，文件系统可能会遭到目录遍历攻击。这样，攻击者便能够在文件系统中指定任意文件作为认证的密钥。</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">"kid": "../../public/css/main.css"   </span><br><span class="line"><span class="comment">//使用公共文件main.css验证token</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>命令注入</strong><br>有时，将KID参数直接传到不安全的文件读取操作可能会让一些命令注入代码流中。<br>一些函数就能给此类型攻击可乘之机，比如<code>Ruby open（）</code>。攻击者只需在输入的KID文件名后面添加命令，即可执行系统命令：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"key_file"</span> | whoami;</span><br></pre></td></tr></table></figure>
+
+<p>类似情况还有很多，这只是其中一个例子。理论上，每当应用程序将未审查的头部文件参数传递给类似<code>system（）</code>，<code>exec（）</code>的函数时，都会产生此种漏洞。</p>
+<hr>
+<h3 id="操纵头部参数"><a href="#操纵头部参数" class="headerlink" title="操纵头部参数"></a><strong>操纵头部参数</strong></h3><p>除KID外，JWT标准还能让开发人员通过URL指定密钥。</p>
+<p><strong>JKU头部参数</strong><br>JKU全称是“JWKSet URL”，它是头部的一个可选字段，用于指定链接到一组加密token密钥的URL。若允许使用该字段且不设置限定条件，攻击者就能托管自己的密钥文件，并指定应用程序，用它来认证token。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jku URL-&gt;包含JWK集的文件-&gt;用于验证令牌的JWK</span><br></pre></td></tr></table></figure>
+
+<p><strong>JWK头部参数</strong><br>头部可选参数JWK（JSON Web Key）使得攻击者能将认证的密钥直接嵌入token中。</p>
+<p><strong>操纵X5U，X5C URL</strong></p>
+<p>同JKU或JWK头部类似，x5u和x5c头部参数允许攻击者用于验证Token的公钥证书或证书链。x5u以URI形式指定信息，而x5c允许将证书值嵌入token中。</p>
+<hr>
+<h2 id="安全建议"><a href="#安全建议" class="headerlink" title="安全建议"></a>安全建议</h2><ul>
+<li>验证函数应忽略JWT中的<code>algo</code> 字段，预先就明确JWT使用的算法，如果需要使用多种算法，可以在<code>header</code> 中使用表示”key ID” 的<code>kid</code> 字段，查询每个<code>kid</code> 对应的算法。</li>
+<li>JWT/JWS 标准应该移除 <code>header</code> 中的<code>algo</code> 字段。JWT的许多安全缺陷都来自于开发者依赖这一客户端可控的字段。</li>
+<li>开发者应升级相应库到最新版本，因为旧版本可能存在致命缺陷。</li>
+</ul>
+<p><strong>最后</strong></p>
+<p>抄袭于以下文章，感谢！</p>
+<p><a href="https://www.freebuf.com/articles/web/180874.html" target="_blank" rel="noopener">https://www.freebuf.com/articles/web/180874.html</a></p>
+<p><a href="https://www.freebuf.com/column/170359.html" target="_blank" rel="noopener">https://www.freebuf.com/column/170359.html</a></p>
+<p><a href="https://www.freebuf.com/sectool/207498.html" target="_blank" rel="noopener">https://www.freebuf.com/sectool/207498.html</a></p>
+<p><strong><em>推荐阅读</em></strong>：</p>
+<blockquote>
+<p><a href="https://www.freebuf.com/articles/web/181261.html" target="_blank" rel="noopener">https://www.freebuf.com/articles/web/181261.html</a></p>
+</blockquote>
 
       
     </div>
