@@ -98,7 +98,7 @@
 <p>JWT的第二部分是payload，其中包含claims。claims是关于实体（常用的是用户信息）和其他数据的声明，claims有三种类型： <strong>registered</strong>, <strong>public</strong>, <strong>and private claims</strong>。<br><strong><em>Registered claims</em></strong>： 这些是一组预定义的laims，非强制性的，但是推荐使用， iss（发行人）， exp（到期时间）， sub（主题）， aud（观众）等；<br><strong><em>Public claims</em></strong>: 自定义claims，注意不要和JWT注册表中属性冲突，这里可以查看JWT注册表<br><strong><em>Private claims</em></strong>: 这些是自定义的claims，用于在同意使用这些claims的各方之间共享信息，它们既不是Registered claims，也不是Public claims。</p>
 <p>默认的有<strong>七</strong>个字段：</p>
 <blockquote>
-<p><strong>iss  【issuer】发布者的url地址</strong></p>
+<p>iss  【issuer】发布者的url地址**</p>
 <p><strong>sub 【subject】该JWT所面向的用户，用于处理特定应用，不是常用的字段</strong> <strong>aud 【audience】接受者的url地址</strong></p>
 <p><strong>exp 【expiration】 该jwt销毁的时间；unix时间戳</strong></p>
 <p><strong>nbf  【not before】 该jwt的使用时间不能早于该时间；unix时间戳</strong></p>
@@ -152,9 +152,12 @@
 <li><a href="https://github.com/brendan-rius/c-jwt-cracker" target="_blank" rel="noopener">https://github.com/brendan-rius/c-jwt-cracker</a>     [推荐]</li>
 </ul>
 <hr>
+<h3 id="秘钥泄露"><a href="#秘钥泄露" class="headerlink" title="秘钥泄露"></a><strong>秘钥泄露</strong></h3><p>可以尝试利用，git信息泄露、目录遍历，任意文件读取、XXE漏洞等获取秘钥，从而伪造任意token签名。</p>
+<hr>
 <h3 id="伪造密钥"><a href="#伪造密钥" class="headerlink" title="伪造密钥"></a><strong>伪造密钥</strong></h3><p>有时JWT采用<code>header</code> 中的<code>kid</code> 字段关联校验算法的密钥，这个密钥可能是对称加密的密钥，也可能是非对称加密的公钥。如果能够猜测<code>kid</code> 和 密钥的关联性，攻击者就可能修改<code>kid</code> 来欺骗服务端，使其校验时使用攻击者可控的密钥，于是攻击者就可以伪造任意内容的可通过校验的JWT。</p>
 <hr>
-<h3 id="脑洞大开"><a href="#脑洞大开" class="headerlink" title="脑洞大开"></a><strong>脑洞大开</strong></h3><p><strong>利用JWT进行sql注入</strong></p>
+<h3 id="脑洞大开"><a href="#脑洞大开" class="headerlink" title="脑洞大开"></a><strong>脑洞大开</strong></h3><p>在你已经能随意控制JWT的内容的时候</p>
+<p><strong>利用JWT进行sql注入</strong></p>
 <blockquote>
 <p><a href="https://github.com/greunion/ctf-write-ups/tree/master/2018-nullcon/web/400-web6" target="_blank" rel="noopener">https://github.com/greunion/ctf-write-ups/tree/master/2018-nullcon/web/400-web6</a></p>
 </blockquote>
@@ -182,24 +185,13 @@
 <li>验证函数应忽略JWT中的<code>algo</code> 字段，预先就明确JWT使用的算法，如果需要使用多种算法，可以在<code>header</code> 中使用表示”key ID” 的<code>kid</code> 字段，查询每个<code>kid</code> 对应的算法。</li>
 <li>JWT/JWS 标准应该移除 <code>header</code> 中的<code>algo</code> 字段。JWT的许多安全缺陷都来自于开发者依赖这一客户端可控的字段。</li>
 <li>开发者应升级相应库到最新版本，因为旧版本可能存在致命缺陷。</li>
+<li>对payload进行加密</li>
 </ul>
 <p><strong>最后</strong></p>
 <p>抄袭于以下文章，感谢！</p>
-<blockquote>
-<blockquote>
 <p><a href="https://www.freebuf.com/articles/web/180874.html" target="_blank" rel="noopener">https://www.freebuf.com/articles/web/180874.html</a></p>
-</blockquote>
-</blockquote>
-<blockquote>
-<blockquote>
 <p><a href="https://www.freebuf.com/column/170359.html" target="_blank" rel="noopener">https://www.freebuf.com/column/170359.html</a></p>
-</blockquote>
-</blockquote>
-<blockquote>
-<blockquote>
 <p><a href="https://www.freebuf.com/sectool/207498.html" target="_blank" rel="noopener">https://www.freebuf.com/sectool/207498.html</a></p>
-</blockquote>
-</blockquote>
 <p><strong><em>推荐阅读</em></strong>：</p>
 <blockquote>
 <p><a href="https://www.freebuf.com/articles/web/181261.html" target="_blank" rel="noopener">https://www.freebuf.com/articles/web/181261.html</a></p>
