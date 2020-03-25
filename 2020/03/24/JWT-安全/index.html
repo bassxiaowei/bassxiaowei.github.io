@@ -98,7 +98,7 @@
 <p>JWT的第二部分是payload，其中包含claims。claims是关于实体（常用的是用户信息）和其他数据的声明，claims有三种类型： <strong>registered</strong>, <strong>public</strong>, <strong>and private claims</strong>。<br><strong><em>Registered claims</em></strong>： 这些是一组预定义的laims，非强制性的，但是推荐使用， iss（发行人）， exp（到期时间）， sub（主题）， aud（观众）等；<br><strong><em>Public claims</em></strong>: 自定义claims，注意不要和JWT注册表中属性冲突，这里可以查看JWT注册表<br><strong><em>Private claims</em></strong>: 这些是自定义的claims，用于在同意使用这些claims的各方之间共享信息，它们既不是Registered claims，也不是Public claims。</p>
 <p>默认的有<strong>七</strong>个字段：</p>
 <blockquote>
-<p>iss  【issuer】发布者的url地址**</p>
+<p><strong>iss  【issuer】发布者的url地址</strong></p>
 <p><strong>sub 【subject】该JWT所面向的用户，用于处理特定应用，不是常用的字段</strong> <strong>aud 【audience】接受者的url地址</strong></p>
 <p><strong>exp 【expiration】 该jwt销毁的时间；unix时间戳</strong></p>
 <p><strong>nbf  【not before】 该jwt的使用时间不能早于该时间；unix时间戳</strong></p>
@@ -185,9 +185,21 @@
 </ul>
 <p><strong>最后</strong></p>
 <p>抄袭于以下文章，感谢！</p>
+<blockquote>
+<blockquote>
 <p><a href="https://www.freebuf.com/articles/web/180874.html" target="_blank" rel="noopener">https://www.freebuf.com/articles/web/180874.html</a></p>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
 <p><a href="https://www.freebuf.com/column/170359.html" target="_blank" rel="noopener">https://www.freebuf.com/column/170359.html</a></p>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
 <p><a href="https://www.freebuf.com/sectool/207498.html" target="_blank" rel="noopener">https://www.freebuf.com/sectool/207498.html</a></p>
+</blockquote>
+</blockquote>
 <p><strong><em>推荐阅读</em></strong>：</p>
 <blockquote>
 <p><a href="https://www.freebuf.com/articles/web/181261.html" target="_blank" rel="noopener">https://www.freebuf.com/articles/web/181261.html</a></p>
